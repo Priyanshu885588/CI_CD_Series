@@ -1,0 +1,640 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dev-Pulse | Interactive Project Overview</title>
+
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Styles -->
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #fcfbf9;
+            /* Warm neutral background */
+            color: #1f2937;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #d1d5db;
+            border-radius: 4px;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: #9ca3af;
+        }
+
+        /* Chart Container Strict Styling */
+        .chart-container {
+            position: relative;
+            width: 100%;
+            max-width: 100%;
+            height: 300px;
+            margin: 0 auto;
+        }
+
+        @media (min-width: 768px) {
+            .chart-container {
+                height: 350px;
+            }
+        }
+
+        /* Architecture Diagram Connectors (Pure CSS) */
+        .connector-line {
+            position: absolute;
+            background-color: #e5e7eb;
+            z-index: 0;
+        }
+
+        .active-phase {
+            border-left: 4px solid #3b82f6;
+            background-color: #eff6ff;
+        }
+
+        .code-block {
+            font-family: 'Courier New', Courier, monospace;
+            background-color: #1e293b;
+            color: #e2e8f0;
+        }
+    </style>
+
+    <!-- Chosen Palette: Warm Professional -->
+    <!-- Primary: #fcfbf9 (Background), #ffffff (Cards) -->
+    <!-- Text: #1f2937 (Dark Gray), #4b5563 (Light Gray) -->
+    <!-- Accents: #3b82f6 (DevOps Blue), #f97316 (Warning Orange), #10b981 (Success Green) -->
+</head>
+
+<body class="antialiased selection:bg-blue-100 selection:text-blue-900">
+
+    <!-- Application Structure Plan:
+         1. Hero Section: Introduction to Dev-Pulse, value prop, and badges.
+         2. Architecture Explorer: An interactive diagram section. Users click on 'Browser', 'Server', or 'Docker' to see specific API flows and responsibilities.
+         3. Live Simulation: A section demonstrating the 'Monitoring' aspect with a live-updating Chart.js visual, explaining the polling mechanism.
+         4. Docker Isolation Lab: An interactive toggle comparing Local vs. Docker environments (PID differences).
+         5. CI/CD Roadmap: A vertical timeline showing the evolutionary phases of the pipeline.
+         
+         Rationale: The structure moves from "Concept" (Architecture) to "Function" (Simulation) to "Deep Dive" (Docker) and finally "Process" (CI/CD), mirroring a developer's learning curve.
+    -->
+
+    <!-- Visualization & Content Choices:
+         1. Arch Explorer: CSS Grid + JS state. Goal: Explain 'Modular Architecture'. Interaction: Click to reveal details. No SVG.
+         2. Metrics Chart: Chart.js Line Chart. Goal: Visualize '/api/metrics'. Interaction: Real-time updates simulation.
+         3. Docker Toggle: JS Switch. Goal: Explain 'Environment Isolation'. Interaction: Toggle triggers DOM text update (PID 4231 vs PID 1).
+         4. Roadmap: Interactive List. Goal: Outline the SDLC phases. Interaction: Click to expand details.
+         
+         CONFIRMATION: NO SVG graphics used. NO Mermaid JS used.
+    -->
+
+    <!-- Navigation -->
+    <nav class="sticky top-0 z-50 bg-white/80 backdrop-blur-md border-b border-gray-200">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between h-16 items-center">
+                <div class="flex items-center gap-2">
+                    <div class="w-3 h-3 rounded-full bg-blue-500 animate-pulse"></div>
+                    <span class="text-xl font-bold tracking-tight text-gray-900">Dev-Pulse <span
+                            class="text-gray-400 font-normal">| Docs</span></span>
+                </div>
+                <div class="hidden md:flex space-x-8 text-sm font-medium text-gray-500">
+                    <a href="#architecture" class="hover:text-blue-600 transition-colors">Architecture</a>
+                    <a href="#simulation" class="hover:text-blue-600 transition-colors">Live Demo</a>
+                    <a href="#docker" class="hover:text-blue-600 transition-colors">Dockerization</a>
+                    <a href="#roadmap" class="hover:text-blue-600 transition-colors">CI/CD</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 space-y-24">
+
+        <!-- HERO SECTION -->
+        <section class="text-center space-y-6 animate-fade-in-up">
+            <div
+                class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-blue-50 text-blue-700 text-xs font-semibold tracking-wide uppercase">
+                SDLC Modernization
+            </div>
+            <h1 class="text-4xl md:text-6xl font-extrabold text-gray-900 tracking-tight leading-tight">
+                Production-Ready <br class="hidden md:block" />
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-cyan-500">System
+                    Monitoring</span>
+            </h1>
+            <p class="max-w-2xl mx-auto text-lg text-gray-600 leading-relaxed">
+                Dev-Pulse demonstrates the transition from "Works on my machine" to a robust, containerized production
+                environment. A full-stack reference for modern DevOps practices.
+            </p>
+
+            <!-- Badges Visualization -->
+            <div class="flex flex-wrap justify-center gap-3 mt-4">
+                <span
+                    class="px-3 py-1 rounded border border-gray-200 bg-white text-xs font-medium text-gray-600 shadow-sm">License:
+                    MIT</span>
+                <span
+                    class="px-3 py-1 rounded border border-green-200 bg-green-50 text-xs font-medium text-green-700 shadow-sm">Node.js
+                    v18+</span>
+                <span
+                    class="px-3 py-1 rounded border border-cyan-200 bg-cyan-50 text-xs font-medium text-cyan-700 shadow-sm">Docker
+                    Ready</span>
+                <span
+                    class="px-3 py-1 rounded border border-orange-200 bg-orange-50 text-xs font-medium text-orange-700 shadow-sm">CI/CD:
+                    Evolutionary</span>
+            </div>
+        </section>
+
+        <!-- ARCHITECTURE EXPLORER -->
+        <section id="architecture" class="scroll-mt-24">
+            <div class="max-w-3xl mx-auto mb-10">
+                <h2 class="text-3xl font-bold text-gray-900 mb-4">System Architecture</h2>
+                <p class="text-gray-600">
+                    The application uses a modular design ensuring separation of concerns. Explore the interactive
+                    diagram below to understand the communication flow between the Frontend, Backend, and the Operating
+                    System.
+                </p>
+            </div>
+
+            <div
+                class="grid grid-cols-1 lg:grid-cols-12 gap-8 bg-white rounded-2xl shadow-sm border border-gray-100 p-8 relative">
+
+                <!-- Interactive Diagram Area (Left) -->
+                <div class="lg:col-span-7 relative flex flex-col justify-between gap-8 min-h-[400px]">
+                    <!-- Connector Line -->
+                    <div
+                        class="hidden lg:block absolute left-1/2 top-10 bottom-10 w-0.5 bg-gray-200 -z-0 transform -translate-x-1/2">
+                    </div>
+
+                    <!-- Node 1: Browser -->
+                    <div onclick="updateArchDetails('frontend')"
+                        class="relative z-10 bg-white p-6 rounded-xl border-2 border-blue-100 hover:border-blue-500 cursor-pointer transition-all shadow-sm hover:shadow-md group">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-bold text-gray-900">User Browser</h3>
+                            <span class="text-xs font-mono bg-gray-100 px-2 py-1 rounded text-gray-500">HTTP
+                                Client</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-2">Glassmorphism UI • Tailwind CSS</p>
+                        <div class="text-xs text-blue-600 font-medium group-hover:underline">Click to inspect flow
+                            &darr;</div>
+                    </div>
+
+                    <!-- Flow Label -->
+                    <div
+                        class="self-center z-10 bg-gray-50 px-3 py-1 rounded-full border border-gray-200 text-xs text-gray-500 font-mono">
+                        Polling (5s) via Fetch API
+                    </div>
+
+                    <!-- Node 2: Server -->
+                    <div onclick="updateArchDetails('backend')"
+                        class="relative z-10 bg-white p-6 rounded-xl border-2 border-indigo-100 hover:border-indigo-500 cursor-pointer transition-all shadow-sm hover:shadow-md group">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-bold text-gray-900">Node.js Express Server</h3>
+                            <span class="text-xs font-mono bg-gray-100 px-2 py-1 rounded text-gray-500">Port 3000</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-2">Bridge between UI and OS</p>
+                        <div class="text-xs text-indigo-600 font-medium group-hover:underline">Click to inspect APIs
+                            &darr;</div>
+                    </div>
+
+                    <!-- Node 3: Infrastructure -->
+                    <div onclick="updateArchDetails('docker')"
+                        class="relative z-10 bg-white p-6 rounded-xl border-2 border-cyan-100 hover:border-cyan-500 cursor-pointer transition-all shadow-sm hover:shadow-md group">
+                        <div class="flex items-center justify-between mb-2">
+                            <h3 class="font-bold text-gray-900">Docker Container</h3>
+                            <span class="text-xs font-mono bg-gray-100 px-2 py-1 rounded text-gray-500">Alpine
+                                Linux</span>
+                        </div>
+                        <p class="text-sm text-gray-500 mb-2">OS Native Modules • Process Isolation</p>
+                        <div class="text-xs text-cyan-600 font-medium group-hover:underline">Click to inspect isolation
+                            &darr;</div>
+                    </div>
+                </div>
+
+                <!-- Detail Panel (Right) -->
+                <div
+                    class="lg:col-span-5 bg-gray-50 rounded-xl p-6 border border-gray-200 flex flex-col justify-center">
+                    <h4 id="arch-title" class="text-lg font-bold text-gray-900 mb-2">Select a Component</h4>
+                    <p id="arch-desc" class="text-sm text-gray-600 mb-6">Click on any block in the diagram to view its
+                        specific responsibilities, endpoints, and code structure.</p>
+
+                    <div id="arch-code" class="hidden">
+                        <div class="text-xs font-semibold text-gray-400 uppercase tracking-wider mb-2">Key Highlights
+                        </div>
+                        <ul id="arch-list" class="space-y-3 text-sm text-gray-700">
+                            <!-- Dynamic Content -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- LIVE METRICS SIMULATION -->
+        <section id="simulation" class="scroll-mt-24">
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+                <div class="order-2 lg:order-1">
+                    <div class="bg-white p-6 rounded-2xl shadow-lg border border-gray-100">
+                        <div class="flex justify-between items-center mb-6">
+                            <h3 class="font-bold text-gray-800">Simulated CPU Load</h3>
+                            <span class="flex h-2 w-2 relative">
+                                <span
+                                    class="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+                                <span class="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+                            </span>
+                        </div>
+
+                        <!-- Chart Container -->
+                        <div class="chart-container">
+                            <canvas id="metricsChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="order-1 lg:order-2">
+                    <div
+                        class="inline-block px-3 py-1 mb-4 rounded-full bg-indigo-50 text-indigo-700 text-xs font-bold uppercase">
+                        Data Visualization</div>
+                    <h2 class="text-3xl font-bold text-gray-900 mb-4">Internal API Monitoring</h2>
+                    <p class="text-gray-600 mb-6">
+                        The dashboard polls the <code
+                            class="bg-gray-100 px-1 py-0.5 rounded text-sm text-pink-600">/api/metrics</code> endpoint.
+                        This simulation demonstrates how the app visualizes data aggregated from the Node.js
+                        <code>os</code> module.
+                    </p>
+
+                    <div class="space-y-4">
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">
+                                1</div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 text-sm">Endpoint: /api/metrics</h4>
+                                <p class="text-sm text-gray-500">Aggregates CPU cores, RAM usage, and Load Average.</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start gap-4">
+                            <div
+                                class="flex-shrink-0 w-8 h-8 rounded-full bg-blue-100 flex items-center justify-center text-blue-600 font-bold text-sm">
+                                2</div>
+                            <div>
+                                <h4 class="font-bold text-gray-900 text-sm">Endpoint: /health</h4>
+                                <p class="text-sm text-gray-500">A lightweight endpoint used by CI/CD pipelines to
+                                    verify deployment success (Pass/Fail).</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- DOCKER ISOLATION LAB -->
+        <section id="docker" class="scroll-mt-24 bg-gray-900 rounded-3xl overflow-hidden text-white shadow-2xl">
+            <div class="p-8 md:p-12">
+                <div class="max-w-3xl">
+                    <h2 class="text-3xl font-bold mb-4">Containerization & Isolation</h2>
+                    <p class="text-gray-400 mb-8">
+                        One of the key lessons in Dev-Pulse is visualizing the difference between running code locally
+                        versus in a container. Use the toggle below to observe the impact on Process IDs.
+                    </p>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <!-- Control Panel -->
+                    <div class="space-y-6">
+                        <div class="flex items-center gap-4 bg-gray-800/50 p-2 rounded-lg w-fit border border-gray-700">
+                            <button id="btn-local" onclick="toggleEnv('local')"
+                                class="px-6 py-2 rounded-md text-sm font-medium bg-blue-600 text-white shadow-lg transition-all">Local
+                                Env</button>
+                            <button id="btn-docker" onclick="toggleEnv('docker')"
+                                class="px-6 py-2 rounded-md text-sm font-medium text-gray-400 hover:text-white transition-all">Docker
+                                Env</button>
+                        </div>
+
+                        <div class="space-y-2">
+                            <h4 class="text-sm font-bold text-gray-300 uppercase tracking-widest">Environment Context
+                            </h4>
+                            <p id="env-desc" class="text-sm text-gray-400 leading-relaxed">
+                                Running directly on your host machine (Windows/Mac/Linux). The application shares the OS
+                                kernel and process namespace with thousands of other apps.
+                            </p>
+                        </div>
+                    </div>
+
+                    <!-- Terminal Visual -->
+                    <div
+                        class="bg-black rounded-xl p-6 font-mono text-sm border border-gray-800 shadow-inner min-h-[200px] flex flex-col justify-center">
+                        <div class="flex gap-2 mb-4">
+                            <div class="w-3 h-3 rounded-full bg-red-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-yellow-500"></div>
+                            <div class="w-3 h-3 rounded-full bg-green-500"></div>
+                        </div>
+                        <div class="space-y-2">
+                            <div class="flex justify-between text-gray-500 border-b border-gray-800 pb-2">
+                                <span>METRIC</span>
+                                <span>VALUE</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-purple-400">Node Version</span>
+                                <span>v18.16.0</span>
+                            </div>
+                            <div class="flex justify-between">
+                                <span class="text-blue-400">Platform</span>
+                                <span id="term-platform">win32</span>
+                            </div>
+                            <div class="flex justify-between bg-gray-900 p-2 rounded border border-gray-700 mt-2">
+                                <span class="text-green-400 font-bold">Process ID (PID)</span>
+                                <span id="term-pid" class="text-white font-bold text-xl">14521</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- CI/CD ROADMAP -->
+        <section id="roadmap" class="scroll-mt-24">
+            <div class="text-center mb-12">
+                <h2 class="text-3xl font-bold text-gray-900">Evolutionary Pipeline</h2>
+                <p class="text-gray-600 mt-2">The project roadmap focuses on moving from fragile manual processes to
+                    automated reliability.</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                <!-- Phase 1 -->
+                <div onclick="updateRoadmap(1)"
+                    class="cursor-pointer bg-white p-6 rounded-xl border border-gray-200 hover:border-blue-400 hover:shadow-lg transition-all active-phase"
+                    id="phase-1">
+                    <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Phase 1</div>
+                    <h3 class="font-bold text-lg text-gray-900 mb-2">Manual Setup</h3>
+                    <p class="text-sm text-gray-500">"Works on my machine"</p>
+                </div>
+
+                <!-- Phase 2 -->
+                <div onclick="updateRoadmap(2)"
+                    class="cursor-pointer bg-white p-6 rounded-xl border border-gray-200 hover:border-blue-400 hover:shadow-lg transition-all"
+                    id="phase-2">
+                    <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Phase 2</div>
+                    <h3 class="font-bold text-lg text-gray-900 mb-2">Simulated Failure</h3>
+                    <p class="text-sm text-gray-500">Jest & Integration Tests</p>
+                </div>
+
+                <!-- Phase 3 -->
+                <div onclick="updateRoadmap(3)"
+                    class="cursor-pointer bg-white p-6 rounded-xl border border-gray-200 hover:border-blue-400 hover:shadow-lg transition-all"
+                    id="phase-3">
+                    <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Phase 3</div>
+                    <h3 class="font-bold text-lg text-gray-900 mb-2">Containerization</h3>
+                    <p class="text-sm text-gray-500">Docker Build & Run</p>
+                </div>
+
+                <!-- Phase 4 -->
+                <div onclick="updateRoadmap(4)"
+                    class="cursor-pointer bg-white p-6 rounded-xl border border-gray-200 hover:border-blue-400 hover:shadow-lg transition-all"
+                    id="phase-4">
+                    <div class="text-xs font-bold text-gray-400 uppercase tracking-wider mb-2">Phase 4</div>
+                    <h3 class="font-bold text-lg text-gray-900 mb-2">Automation</h3>
+                    <p class="text-sm text-gray-500">Production Push</p>
+                </div>
+            </div>
+
+            <!-- Dynamic Phase Content -->
+            <div class="mt-8 bg-white p-8 rounded-2xl border border-gray-200 shadow-sm min-h-[150px] flex items-center">
+                <div id="roadmap-content" class="w-full">
+                    <h4 class="text-xl font-bold text-gray-900 mb-2">Phase 1: Initial Setup</h4>
+                    <p class="text-gray-600 mb-4">The starting point. Code is cloned manually, dependencies are
+                        installed via `npm install`, and the server is started locally. Prone to environment drift.</p>
+                    <div class="code-block p-3 rounded text-sm">
+                        $ git clone repo-url<br>
+                        $ npm install<br>
+                        $ npm start
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <footer class="bg-white border-t border-gray-200 py-12 mt-24">
+        <div class="max-w-7xl mx-auto px-4 text-center">
+            <p class="text-gray-900 font-bold mb-2">Dev-Pulse Documentation</p>
+            <p class="text-gray-500 text-sm">Based on the source report: <code>README.md</code></p>
+            <p class="text-gray-400 text-xs mt-4">Project Lead: Priyanshu Mandani</p>
+        </div>
+    </footer>
+
+    <!-- INTERACTION LOGIC -->
+    <script>
+        // --- 1. Architecture Explorer Logic ---
+        const archData = {
+            frontend: {
+                title: "User Browser (Frontend)",
+                desc: "The single-page application built with plain HTML and Tailwind CSS. It is responsible for fetching data and rendering the Glassmorphism UI.",
+                highlights: [
+                    "<b>Polling:</b> Uses `setInterval` to fetch data every 5 seconds.",
+                    "<b>UI:</b> Updates DOM elements by ID (e.g., `cpu-count`).",
+                    "<b>Path:</b> `/public/index.html`"
+                ]
+            },
+            backend: {
+                title: "Node.js Express Server",
+                desc: "The core logic layer. It processes HTTP requests and communicates with the underlying Operating System using Node's native modules.",
+                highlights: [
+                    "<b>Bridge:</b> Connects UI to OS.",
+                    "<b>Endpoint:</b> `/api/metrics` (Hardware stats)",
+                    "<b>Endpoint:</b> `/api/proc` (Process stats)",
+                    "<b>Endpoint:</b> `/health` (CI/CD check)"
+                ]
+            },
+            docker: {
+                title: "Docker Container",
+                desc: "The isolated runtime environment. Ensures the application runs consistently regardless of the host machine's configuration.",
+                highlights: [
+                    "<b>Base Image:</b> Node:18-slim",
+                    "<b>Isolation:</b> Own process namespace (PID 1).",
+                    "<b>Port:</b> Exposes port 3000.",
+                    "<b>Command:</b> `docker build -t dev-pulse:v1 .`"
+                ]
+            }
+        };
+
+        function updateArchDetails(key) {
+            const data = archData[key];
+            const codePanel = document.getElementById('arch-code');
+            const list = document.getElementById('arch-list');
+
+            document.getElementById('arch-title').innerHTML = data.title;
+            document.getElementById('arch-desc').innerHTML = data.desc;
+
+            codePanel.classList.remove('hidden');
+            list.innerHTML = data.highlights.map(item =>
+                `<li class="flex items-start gap-2">
+                    <span class="mt-1.5 w-1.5 h-1.5 rounded-full bg-blue-500 flex-shrink-0"></span>
+                    <span>${item}</span>
+                 </li>`
+            ).join('');
+        }
+
+        // --- 2. Chart.js Simulation Logic ---
+        const ctx = document.getElementById('metricsChart').getContext('2d');
+
+        // Initial Data
+        const initialLabels = Array.from({ length: 10 }, (_, i) => `${i}s`);
+        const initialData = Array.from({ length: 10 }, () => Math.floor(Math.random() * 30) + 10);
+
+        const chart = new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: initialLabels,
+                datasets: [{
+                    label: 'CPU Usage (%)',
+                    data: initialData,
+                    borderColor: '#3b82f6',
+                    backgroundColor: 'rgba(59, 130, 246, 0.1)',
+                    borderWidth: 2,
+                    fill: true,
+                    tension: 0.4,
+                    pointRadius: 0
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                animation: {
+                    duration: 1000,
+                    easing: 'linear'
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100,
+                        grid: { display: true, color: '#f3f4f6' }
+                    },
+                    x: {
+                        grid: { display: false }
+                    }
+                },
+                plugins: {
+                    legend: { display: false },
+                    tooltip: {
+                        mode: 'index',
+                        intersect: false,
+                        backgroundColor: 'rgba(255, 255, 255, 0.9)',
+                        titleColor: '#1f2937',
+                        bodyColor: '#1f2937',
+                        borderColor: '#e5e7eb',
+                        borderWidth: 1
+                    }
+                }
+            }
+        });
+
+        // Simulate Real-time Data Stream
+        setInterval(() => {
+            const newVal = Math.floor(Math.random() * 40) + 20; // Random value between 20-60
+
+            // Remove oldest
+            chart.data.labels.shift();
+            chart.data.datasets[0].data.shift();
+
+            // Add newest
+            chart.data.labels.push(`${new Date().getSeconds()}s`);
+            chart.data.datasets[0].data.push(newVal);
+
+            chart.update();
+        }, 2000); // Update every 2 seconds
+
+        // --- 3. Docker Toggle Logic ---
+        function toggleEnv(env) {
+            const btnLocal = document.getElementById('btn-local');
+            const btnDocker = document.getElementById('btn-docker');
+            const termPid = document.getElementById('term-pid');
+            const termPlatform = document.getElementById('term-platform');
+            const desc = document.getElementById('env-desc');
+
+            if (env === 'local') {
+                btnLocal.classList.add('bg-blue-600', 'text-white');
+                btnLocal.classList.remove('text-gray-400');
+                btnDocker.classList.remove('bg-blue-600', 'text-white');
+                btnDocker.classList.add('text-gray-400');
+
+                termPid.innerText = Math.floor(Math.random() * 10000) + 2000;
+                termPlatform.innerText = "win32";
+                desc.innerText = "Running directly on your host machine. The Process ID (PID) is high because it shares the namespace with your browser, OS, and other tools.";
+            } else {
+                btnDocker.classList.add('bg-blue-600', 'text-white');
+                btnDocker.classList.remove('text-gray-400');
+                btnLocal.classList.remove('bg-blue-600', 'text-white');
+                btnLocal.classList.add('text-gray-400');
+
+                termPid.innerText = "1";
+                termPlatform.innerText = "linux";
+                desc.innerHTML = "<strong class='text-white'>Visual Proof:</strong> Inside the container, the PID is 1. This confirms that the Node application is the primary process in its own isolated namespace.";
+            }
+        }
+
+        // --- 4. Roadmap Logic ---
+        const roadmapData = {
+            1: {
+                title: "Phase 1: Initial Setup",
+                text: "The starting point. Code is cloned manually, dependencies are installed via `npm install`, and the server is started locally. Prone to environment drift.",
+                code: "$ git clone repo-url<br>$ npm install<br>$ npm start"
+            },
+            2: {
+                title: "Phase 2: Simulated Failure",
+                text: "Integrating Jest to run automated tests. We introduce a 'Simulated Failure' endpoint to teach the pipeline how to catch bugs before they hit production.",
+                code: "$ npm test<br><span class='text-green-400'>PASS</span> __tests__/app.test.js"
+            },
+            3: {
+                title: "Phase 3: Containerization",
+                text: "Creating the `Dockerfile`. This stage ensures that if the code builds here, it will run anywhere. We verify isolation by checking the PID.",
+                code: "FROM node:18-slim<br>WORKDIR /app<br>COPY . .<br>CMD [\"node\", \"server.js\"]"
+            },
+            4: {
+                title: "Phase 4: Automation",
+                text: "The final goal. Pushing code to GitHub triggers a workflow that builds the Docker image and pushes it to a registry automatically.",
+                code: "on: push<br>jobs:<br>  build-and-push:<br>    runs-on: ubuntu-latest"
+            }
+        };
+
+        function updateRoadmap(phase) {
+            // Update UI State
+            [1, 2, 3, 4].forEach(p => {
+                const el = document.getElementById(`phase-${p}`);
+                if (p === phase) {
+                    el.classList.add('active-phase', 'bg-blue-50', 'border-blue-200');
+                    el.classList.remove('border-gray-200');
+                } else {
+                    el.classList.remove('active-phase', 'bg-blue-50', 'border-blue-200');
+                    el.classList.add('border-gray-200');
+                }
+            });
+
+            // Update Content
+            const data = roadmapData[phase];
+            const contentDiv = document.getElementById('roadmap-content');
+
+            contentDiv.innerHTML = `
+                <h4 class="text-xl font-bold text-gray-900 mb-2 animate-fade-in">${data.title}</h4>
+                <p class="text-gray-600 mb-4">${data.text}</p>
+                <div class="code-block p-3 rounded text-sm shadow-inner">${data.code}</div>
+            `;
+        }
+
+        // Initialize Architecture View
+        updateArchDetails('frontend');
+    </script>
+</body>
+
+</html>
