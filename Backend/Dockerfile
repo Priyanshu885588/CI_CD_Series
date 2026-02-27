@@ -22,4 +22,5 @@ EXPOSE 3000
 USER node
 
 # Run the app
+#to run the ci yml file
 CMD ["node", "server.js"]

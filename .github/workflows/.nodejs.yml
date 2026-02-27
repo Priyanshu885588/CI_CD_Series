@@ -1,0 +1,62 @@
+name: Nodejs security and dependency check
+
+on:
+  push:
+    branches: [main, "feature/node*"]
+    paths:
+      - "Backend"
+  pull_request:
+    branches: [main, "feature/node*"]
+    paths:
+      - "Backend"
+
+jobs:
+  security-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout full history
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Run Gitleaks
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Run Semgrep
+        uses: returntocorp/semgrep-action@v1
+        with:
+          config: >-
+            p/nodejs
+            p/security-audit
+          target: Backend
+
+  dependency-scan:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node
+        uses: action/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install deps
+        run: |
+          cd Backend
+          npm ci --ignore-scripts
+
+      - name: NPM audit
+        run: |
+          cd Backend
+          npm audit --audit-level-high
+
+      - name: OWSAP dependency check
+        uses: dependency-check/Dependency-Check_Action@main
+        with:
+          project: "Backend"
+          path: "./Backend"
+          format: "HTML"
